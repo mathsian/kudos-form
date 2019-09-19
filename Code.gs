@@ -84,7 +84,10 @@ function onFormSubmit(e) {
                      subject: "Kudos to "+student_name,
                      htmlBody: msg,
                      noReply: true});
-  if ("Copy in the student's email" in options) {
+  // checkboxes are handled so badly!
+  // getResponse yields an array of strings of option text
+  // if we ever have more than one option we are not guaranteed that they'll even be returned in order!?
+  if (options[0] == "Copy in the student's email") {
     templ = HtmlService.createTemplateFromFile("student kudos template.html");
     templ.kudos = {student_name: student_name,
                  points: points,
