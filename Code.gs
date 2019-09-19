@@ -72,6 +72,9 @@ function onFormSubmit(e) {
     return;
   }
   
+  // debugging email
+  //MailApp.sendEmail("ian@ada.ac.uk","kudos debugging",options[0]);
+  
   // send email
   var templ = HtmlService.createTemplateFromFile("kudos email template.html");
   templ.kudos = {student_name: student_name,
@@ -87,7 +90,7 @@ function onFormSubmit(e) {
   // checkboxes are handled so badly!
   // getResponse yields an array of strings of option text
   // if we ever have more than one option we are not guaranteed that they'll even be returned in order!?
-  if (options[0] == "Copy in the student's email") {
+  if (options[0] == "Copy in student's email") {
     templ = HtmlService.createTemplateFromFile("student kudos template.html");
     templ.kudos = {student_name: student_name,
                  points: points,
