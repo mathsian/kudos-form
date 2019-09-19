@@ -37,6 +37,8 @@ function onFormSubmit(e) {
   var student_email = responses[0].getResponse();
   var points = responses[1].getResponse();
   var reason = responses[2].getResponse();
+  var value = responses[3].getResponse();
+  var options = responses[4].getResponse();
   var respondent = e.response.getRespondentEmail();
   var date = Date();
   
@@ -75,12 +77,25 @@ function onFormSubmit(e) {
   templ.kudos = {student_name: student_name,
                  points: points,
                  respondent: respondent,
-                 reason: reason};
+                 reason: reason,
+                 value: value};
   var msg = templ.evaluate().getContent();
   MailApp.sendEmail({to: team_email,
                      subject: "Kudos to "+student_name,
                      htmlBody: msg,
                      noReply: true});
+  if ("Copy in the student's email" in options) {
+    templ = HtmlService.createTemplateFromFile("student kudos template.html");
+    templ.kudos = {student_name: student_name,
+                 points: points,
+                 respondent: respondent,
+                 reason: reason,
+                 value: value};
+    MailApp.sendEmail({to: student_email,
+                     subject: "Kudos!",
+                     htmlBody: msg,
+                     noReply: true});
+  }
   
   // *** Unnecessary - use linked sheet instead
   // update the student report kudos tab
