@@ -38,7 +38,10 @@ function onFormSubmit(e) {
   var points = responses[1].getResponse();
   var reason = responses[2].getResponse();
   var value = responses[3].getResponse();
-  var options = responses[4].getResponse();
+  var options = [""];
+  if (responses[4] !== undefined) {
+    options = responses[4].getResponse();
+  }
   var respondent = e.response.getRespondentEmail();
   var date = Date();
   
