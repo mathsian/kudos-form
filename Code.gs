@@ -78,22 +78,28 @@ function onFormSubmit(e) {
   // debugging email
   //MailApp.sendEmail("ian@ada.ac.uk","kudos debugging",options[0]);
   
+  // email the student too?
+  // checkboxes are handled so badly!
+  // getResponse yields an array of strings of option text or error if there are none
+  // if we ever have more than one option we are not guaranteed that they'll even be returned in order!?
+  // Above we arrange for options to be [""] if no options are selected
+  var notify_student = options.indexOf("Copy in student's email") > -1;
+  
   // send email
   var templ = HtmlService.createTemplateFromFile("kudos email template.html");
   templ.kudos = {student_name: student_name,
                  points: points,
                  respondent: respondent,
                  reason: reason,
-                 value: value};
+                 value: value,
+                 notified: notify_student};
   var msg = templ.evaluate().getContent();
   MailApp.sendEmail({to: team_email,
                      subject: "Kudos to "+student_name,
                      htmlBody: msg,
                      noReply: true});
-  // checkboxes are handled so badly!
-  // getResponse yields an array of strings of option text
-  // if we ever have more than one option we are not guaranteed that they'll even be returned in order!?
-  if (options[0] === "Copy in student's email") {
+
+  if (notify_student) {
     templ = HtmlService.createTemplateFromFile("student kudos template.html");
     templ.kudos = {student_name: student_name,
                  points: points,
@@ -106,19 +112,6 @@ function onFormSubmit(e) {
                      noReply: true});
   }
   
-  // *** Unnecessary - use linked sheet instead
-  // update the student report kudos tab
-  //var student_report_ss = SpreadsheetApp.openById(reportid);
-  //var kudos_sheet = student_report_ss.getSheetByName("Kudos");
-  //if (kudos_sheet == null){
-  //    kudos_sheet = student_report_ss.insertSheet("Kudos")
-  //}
-  // this has simultaneous acces problems - use appendrow instead
-  //var new_row_number = kudos_sheet.getLastRow()+1;
-  //kudos_sheet.getRange(new_row_number, 1).setValue(date);
-  //kudos_sheet.getRange(new_row_number, 2).setValue(respondent);
-  //kudos_sheet.getRange(new_row_number, 3).setValue(reason);
-  //kudos_sheet.appendRow([date, respondent, reason]);
 }
 
 function indexOfStudent(student_email, email_range) {
