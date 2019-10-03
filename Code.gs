@@ -83,7 +83,7 @@ function onFormSubmit(e) {
   // getResponse yields an array of strings of option text or error if there are none
   // if we ever have more than one option we are not guaranteed that they'll even be returned in order!?
   // Above we arrange for options to be [""] if no options are selected
-  var notify_student = options.indexOf("Copy in student's email") > -1;
+  var notify_student = options.indexOf("Copy in the student's email") > -1;
   
   // send email
   var templ = HtmlService.createTemplateFromFile("kudos email template.html");
